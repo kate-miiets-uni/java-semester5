@@ -1,41 +1,45 @@
 public class Main {
     public static void main(String[] args) {
-        try {
-            // Створення об'єктів електроприладів
-            ElectroDevice washingMachine = new WashingMachine("Пральна машина", 2000, 15);
-            ElectroDevice refrigerator = new Refrigerator("Холодильник", 1500, 10);
-            ElectroDevice microwave = new Microwave("Мікрохвильова піч", 1000, 20);
+        // Створення об'єктів електроприладів
+        ElectroDevice washingMachine = new WashingMachine("Пральна машина", 2000, 15);
+        ElectroDevice refrigerator = new Refrigerator("Холодильник", 1500, 10);
+        ElectroDevice microwave = new Microwave("Мікрохвильова піч", 1000, 20);
 
-            // Створення масиву електроприладів
-            ElectroDevice[] devices = {washingMachine, refrigerator, microwave};
+        // Створення об'єкта ElectroDeviceSet з одним об'єктом
+        ElectroDeviceSet<ElectroDevice> singleDeviceSet = new ElectroDeviceSet<>(washingMachine);
+        System.out.println("Розмір колекції з одним об'єктом: " + singleDeviceSet.size());
 
-            // Створення об'єкта Apartment
-            Apartment apartment = new Apartment(devices);
+        // Створення об'єкта ElectroDeviceSet з колекцією об'єктів
+        ElectroDeviceSet<ElectroDevice> deviceSet = new ElectroDeviceSet<>();
+        deviceSet.add(washingMachine);
+        deviceSet.add(refrigerator);
+        deviceSet.add(microwave);
+        System.out.println("Розмір колекції після додавання трьох об'єктів: " + deviceSet.size());
 
-            // Увімкнення деяких електроприладів
-            apartment.turnOnDevice("Пральна машина");
-            apartment.turnOnDevice("Мікрохвильова піч");
+        // Перевірка наявності об'єкта
+        System.out.println("Чи містить колекція холодильник? " + deviceSet.contains(refrigerator));
 
-            // Підрахунок споживаної потужності
-            int totalPower = apartment.calculateTotalPowerConsumption();
-            System.out.println("Загальна споживана потужність: " + totalPower + " Вт");
+        // Видалення об'єкта
+        deviceSet.remove(microwave);
+        System.out.println("Розмір колекції після видалення мікрохвильової печі: " + deviceSet.size());
 
-            // Сортування електроприладів за потужністю
-            apartment.sortDevicesByPower();
-            System.out.println("\nЕлектроприлади відсортовані за потужністю:");
-            for (ElectroDevice device : apartment.devices) {
-                System.out.println(device.getName() + " - " + device.getPower() + " Вт");
-            }
+        // Створення іншої колекції для перевірки containsAll
+        ElectroDeviceSet<ElectroDevice> anotherSet = new ElectroDeviceSet<>();
+        anotherSet.add(washingMachine);
+        anotherSet.add(refrigerator);
 
-            // Пошук приладу у заданому діапазоні електромагнітного випромінювання
-            ElectroDevice foundDevice = apartment.findDeviceByRadiationRange(10, 15);
-            System.out.println("\nЗнайдений прилад: " + foundDevice.getName());
+        // Перевірка, чи містить колекція deviceSet всі елементи з anotherSet
+        System.out.println("Чи містить deviceSet всі елементи з anotherSet? " + deviceSet.containsAll(anotherSet));
 
-        } catch (IllegalArgumentException e) {
-            System.err.println("Помилка: " + e.getMessage());
-        } catch (Exception e) {
-            System.err.println("Непередбачувана помилка: " + e.getMessage());
-        }
+        // Додавання microwave до anotherSet
+        anotherSet.add(microwave);
+
+        // Перевірка, чи містить колекція deviceSet всі елементи з anotherSet
+        System.out.println("Чи містить deviceSet всі елементи з anotherSet після додавання мікрохвильової печі? " + deviceSet.containsAll(anotherSet));
+
+        // Видалення всіх елементів з deviceSet, які містяться в anotherSet
+        deviceSet.removeAll(anotherSet);
+        System.out.println("Розмір колекції після видалення елементів з anotherSet: " + deviceSet.size());
+
     }
 }
-
